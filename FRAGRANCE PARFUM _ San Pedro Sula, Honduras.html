@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)file:///C:/Users/Ricardo%20Cardona/OneDrive/miweb-3/index.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRAGRANCE PARFUM | San Pedro Sula, Honduras</title>
+
+    <!-- Google Fonts: Playfair Display & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./FRAGRANCE PARFUM _ San Pedro Sula, Honduras_files/css2" rel="stylesheet">
+
+    <!-- Three.js CDN for 3D Perfume Bottle and Particle HUD -->
+    <script src="./FRAGRANCE PARFUM _ San Pedro Sula, Honduras_files/three.min.js.descarga"></script>
+
+    <style>
+        :root {
+            --bg-deep: #050505;
+            --bg-card: rgba(18, 18, 18, 0.88);
+            --text-main: #f8f6f0;
+            --text-muted: #a6a29a;
+            --gold: #d4af37;
+            --gold-light: #f5e6b3;
+            --gold-glow: rgba(212, 175, 55, 0.35);
+            --ease-out-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Luxurious gold nebula & geometric HUD background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background:
+                radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 20% 80%, rgba(180, 140, 30, 0.08) 0%, transparent 50%),
+                linear-gradient(rgba(212, 175, 55, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.025) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(5, 5, 5, 0.92);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+            box-shadow: 0 10px 35px rgba(0,0,0,0.85);
+        }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            transition: color 300ms var(--ease-out-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .btn-wa-nav {
+            border: 1px solid var(--gold);
+            padding: 0.6rem 1.4rem;
+            color: var(--gold) !important;
+            transition: all 300ms var(--ease-out-smooth) !important;
+        }
+
+        .btn-wa-nav:hover {
+            background: var(--gold);
+            color: var(--bg-deep) !important;
+            box-shadow: 0 0 25px var(--gold-glow);
+        }
+
+        /* HERO SECTION WITH 3D CANVAS */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 0 8%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        #canvas3d-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            pointer-events: auto;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 650px;
+            pointer-events: none;
+        }
+
+        .hero-content * {
+            pointer-events: auto;
+        }
+
+        .hero-subtitle-top {
+            font-size: 0.8rem;
+            letter-spacing: 0.4em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s var(--ease-out-smooth) 0.2s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.8rem;
+            line-height: 1.1;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fff 20%, var(--gold) 80%, #f5e6b3 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeUp 1s var(--ease-out-smooth) 0.4s forwards;
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeUp 1s var(--ease-out-smooth) 0.6s forwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: fadeUp 1s var(--ease-out-smooth) 0.8s forwards;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* BUTTONS STYLING & EMIL KOWALSKI TACTILE FEEDBACK */
+        .btn-gold, .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.1rem 2.8rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 160ms var(--ease-out-smooth), background 350ms var(--ease-out-smooth), color 350ms var(--ease-out-smooth), box-shadow 350ms var(--ease-out-smooth);
+            border-radius: 2px;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--bg-deep);
+            border: 1px solid var(--gold);
+            font-weight: 600;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+            box-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .btn-gold:active, .btn-outline:active {
+            transform: scale(0.96);
+        }
+
+        /* HUD CORNER ACCENTS */
+        .hud-corner {
+            position: absolute;
+            width: 20px; height: 20px;
+            border-color: var(--gold);
+            border-style: solid;
+            opacity: 0.5;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .hud-tl { top: 90px; left: 30px; border-width: 1px 0 0 1px; }
+        .hud-tr { top: 90px; right: 30px; border-width: 1px 1px 0 0; }
+        .hud-bl { bottom: 30px; left: 30px; border-width: 0 0 1px 1px; }
+        .hud-br { bottom: 30px; right: 30px; border-width: 0 1px 1px 0; }
+
+        /* CATALOG SECTION */
+        .catalog {
+            position: relative;
+            padding: 8rem 8%;
+            z-index: 2;
+            background: linear-gradient(to bottom, var(--bg-deep), #0c0a06);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.4em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            letter-spacing: 0.2em;
+            font-weight: 400;
+        }
+
+        .gold-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 1.5rem auto 0;
+            box-shadow: 0 0 12px var(--gold);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+        }
+
+        /* GLASSMORPHISM CARDS WITH GOLD RIM */
+        .product-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(20px);
+            border-radius: 4px;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.4s var(--ease-out-smooth), border-color 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(40px) perspective(1000px);
+        }
+
+        .product-card.is-visible {
+            opacity: 1;
+            transform: translateY(0) perspective(1000px);
+        }
+
+        .product-card:hover {
+            border-color: rgba(212, 175, 55, 0.7);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 35px rgba(212, 175, 55, 0.2);
+        }
+
+        .card-image-box {
+            position: relative;
+            height: 350px;
+            background: radial-gradient(circle, #1f1b12 0%, #080705 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-parfum-graphic {
+            width: 90px;
+            height: 180px;
+            border: 1px solid rgba(212, 175, 55, 0.7);
+            background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(0,0,0,0.6));
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(212,175,55,0.3), 0 15px 30px rgba(0,0,0,0.8);
+            transition: transform 0.6s var(--ease-out-smooth);
+        }
+
+        .product-card:hover .card-parfum-graphic {
+            transform: scale(1.08) rotateZ(2deg);
+        }
+
+        .card-parfum-graphic::before {
+            content: "";
+            position: absolute;
+            top: -20px; left: 25px;
+            width: 40px; height: 20px;
+            background: #111;
+            border: 1px solid var(--gold);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 1rem; right: 1rem;
+            background: rgba(5,5,5,0.9);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            padding: 0.3rem 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .card-info {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-category {
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-notes-preview {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            margin-bottom: 1.8rem;
+            min-height: 2.4rem;
+        }
+
+        .btn-card-action {
+            display: block;
+            width: 100%;
+            padding: 0.9rem;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 300ms var(--ease-out-smooth);
+        }
+
+        .btn-card-action:hover {
+            background: var(--gold);
+            color: var(--bg-deep);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        /* MODAL (VISTA RÁPIDA INTERACTIVA) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.88);
+            backdrop-filter: blur(15px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s var(--ease-out-smooth), visibility 0.4s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background: #111;
+            border: 1px solid var(--gold);
+            width: 90%;
+            max-width: 650px;
+            padding: 3rem;
+            position: relative;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.5s var(--ease-out-smooth);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 45px rgba(212,175,55,0.25);
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem; right: 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 300ms;
+        }
+
+        .modal-close:hover {
+            color: var(--gold);
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .modal-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .modal-desc {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #d1cecb;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+        }
+
+        .pyramid-title {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(212,175,55,0.25);
+            padding-bottom: 0.5rem;
+        }
+
+        .pyramid-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+        }
+
+        .pyramid-item span {
+            color: var(--gold);
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        /* FOOTER */
+        .footer {
+            padding: 5rem 5% 3rem;
+            text-align: center;
+            background: #030303;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.35em;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .footer-info {
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .footer-phone {
+            display: inline-block;
+            margin-top: 0.8rem;
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            transition: color 300ms;
+        }
+
+        .footer-phone:hover {
+            color: var(--gold-light);
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .navbar { padding: 1rem 5%; }
+            .nav-links { display: none; }
+            .hero { padding: 0 5%; justify-content: center; text-align: center; }
+            .hero-content { max-width: 100%; }
+            .hero-title { font-size: 3rem; }
+            .hero-buttons { justify-content: center; flex-direction: column; }
+            .catalog { padding: 5rem 5%; }
+            .modal-container { padding: 2rem 1.5rem; width: 95%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HUD Corner Elements -->
+    <div class="hud-corner hud-tl"></div>
+    <div class="hud-corner hud-tr"></div>
+    <div class="hud-corner hud-bl"></div>
+    <div class="hud-corner hud-br"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-brand">FRAGRANCE PARFUM</div>
+        <ul class="nav-links">
+            <li><a href="file:///C:/Users/Ricardo%20Cardona/OneDrive/miweb-3/index.html#coleccion">Colección</a></li>
+            <li><a href="file:///C:/Users/Ricardo%20Cardona/OneDrive/miweb-3/index.html#esencia">Esencia</a></li>
+            <li><a href="https://wa.me/50498314942?text=Hola%20Fragrance%20Parfum,%20quiero%20cotizar%20un%20parfum." target="_blank" class="btn-wa-nav">WhatsApp</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION WITH THREE.JS 3D PERFUME BOTTLE & PARTICLES -->
+    <header class="hero">
+        <div id="canvas3d-container"><canvas width="1920" height="912" style="display: block; width: 1536px; height: 730px;"></canvas></div>
+        <div class="hero-content">
+            <p class="hero-subtitle-top">ALTA PERFUMERÍA DE AUTOR</p>
+            <h1 class="hero-title">FRAGRANCE PARFUM</h1>
+            <p class="hero-desc">El alma del aroma encapsulada en frascos de cristal sutil y geometría pura. Creado para perdurar en la memoria desde San Pedro Sula.</p>
+            <div class="hero-buttons">
+                <a href="file:///C:/Users/Ricardo%20Cardona/OneDrive/miweb-3/index.html#coleccion" class="btn-gold">Explorar Colección</a>
+                <a href="https://wa.me/50498314942?text=Hola%20Fragrance%20Parfum,%20quiero%20cotizar%20un%20parfum." target="_blank" class="btn-outline">Consultar por WhatsApp</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CATALOG SECTION -->
+    <section class="catalog" id="coleccion">
+        <div class="section-header">
+            <p class="section-subtitle">SELECCIÓN EXCLUSIVA</p>
+            <h2 class="section-title">NUESTRAS FRAGANCIAS</h2>
+            <div class="gold-divider"></div>
+        </div>
+
+        <!-- CATEGORY TABS -->
+        <div class="category-tabs" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3.5rem;">
+            <button class="cat-tab active" data-category="todos" style="background: var(--gold); color: var(--bg-deep); border: 1px solid var(--gold); padding: 0.6rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 300ms var(--ease-out-smooth);">Todos (100)</button>
+            <button class="cat-tab" data-category="frescos" style="background: transparent; color: var(--text-main); border: 1px solid rgba(212,175,55,0.3); padding: 0.6rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 300ms var(--ease-out-smooth);">Frescos &amp; Acuáticos</button>
+            <button class="cat-tab" data-category="amaderados" style="background: transparent; color: var(--text-main); border: 1px solid rgba(212,175,55,0.3); padding: 0.6rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 300ms var(--ease-out-smooth);">Amaderados &amp; Oud</button>
+            <button class="cat-tab" data-category="dulces" style="background: transparent; color: var(--text-main); border: 1px solid rgba(212,175,55,0.3); padding: 0.6rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 300ms var(--ease-out-smooth);">Dulces &amp; Gourmand</button>
+            <button class="cat-tab" data-category="florales" style="background: transparent; color: var(--text-main); border: 1px solid rgba(212,175,55,0.3); padding: 0.6rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; cursor: pointer; transition: all 300ms var(--ease-out-smooth);">Florales &amp; Especiados</button>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            <!-- Cards rendered dynamically via JavaScript array -->
+        <article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Khamrah</h3>
+                    <p class="card-category">Extrait de Parfum • Oriental</p>
+                    <p class="card-notes-preview">Canela, Nuez Moscada, Vainilla &amp; Madera de Oud</p>
+                    <button class="btn-card-action" onclick="openModal(1)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Khamrah Qahwa</h3>
+                    <p class="card-category">Extrait de Parfum • Gourmand</p>
+                    <p class="card-notes-preview">Café, Canela, Cardamomo, Vainilla &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(2)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Asad</h3>
+                    <p class="card-category">Eau de Parfum • Intense</p>
+                    <p class="card-notes-preview">Pimienta Negra, Tabaco, Piña, Vainilla &amp; Café</p>
+                    <button class="btn-card-action" onclick="openModal(3)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Asad Zanzibar</h3>
+                    <p class="card-category">Eau de Parfum • Aquatic</p>
+                    <p class="card-notes-preview">Lavanda, Agua de Coco, Sal, Iris &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(4)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Asad Bourbon</h3>
+                    <p class="card-category">Eau de Parfum • Woody</p>
+                    <p class="card-notes-preview">Bourbon, Especias, Cuero &amp; Maderas Preciosas</p>
+                    <button class="btn-card-action" onclick="openModal(5)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Yara (Rosa)</h3>
+                    <p class="card-category">Eau de Parfum • Floral</p>
+                    <p class="card-notes-preview">Orquídea, Heliotropo, Tangerina, Vainilla &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(6)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Yara Tous</h3>
+                    <p class="card-category">Eau de Parfum • Tropical</p>
+                    <p class="card-notes-preview">Mango, Coco, Maracuyá, Jazmín &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(7)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Yara Moi</h3>
+                    <p class="card-category">Eau de Parfum • Amber</p>
+                    <p class="card-notes-preview">Jazmín, Durazno, Caramelo, Pachulí &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(8)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EDICIÓN LIMITADA</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Yara Candy</h3>
+                    <p class="card-category">Eau de Parfum • Fruity</p>
+                    <p class="card-notes-preview">Caramelo de Fresa, Frutas Rojas, Vainilla &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(9)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">FAVORITO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Eclaire</h3>
+                    <p class="card-category">Extrait de Parfum • Gourmand</p>
+                    <p class="card-notes-preview">Caramelo, Leche, Miel, Flores Blancas &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(10)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Fakhar Black</h3>
+                    <p class="card-category">Eau de Parfum • Fougère</p>
+                    <p class="card-notes-preview">Manzana, Bergamota, Lavanda, Especias &amp; Vetiver</p>
+                    <button class="btn-card-action" onclick="openModal(11)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Fakhar Rose</h3>
+                    <p class="card-category">Eau de Parfum • Floral</p>
+                    <p class="card-notes-preview">Lirios, Jazmín, Tardos, Vainilla &amp; Pachulí</p>
+                    <button class="btn-card-action" onclick="openModal(12)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Fakhar Extrait</h3>
+                    <p class="card-category">Extrait de Parfum • Intense</p>
+                    <p class="card-notes-preview">Bergamota, Pimienta, Tabaco, Cuero &amp; Ámbar</p>
+                    <button class="btn-card-action" onclick="openModal(13)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Bade'e Al Oud (Oud for Glory)</h3>
+                    <p class="card-category">Eau de Parfum • Woody Oud</p>
+                    <p class="card-notes-preview">Azafrán, Nuez Moscada, Lavanda, Oud &amp; Pachulí</p>
+                    <button class="btn-card-action" onclick="openModal(14)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Bade'e Al Oud (Amethyst)</h3>
+                    <p class="card-category">Eau de Parfum • Floral Oud</p>
+                    <p class="card-notes-preview">Pimienta Rosa, Bergamota, Rosa de Bulgaria, Oud &amp; Ámbar</p>
+                    <button class="btn-card-action" onclick="openModal(15)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Bade'e Al Oud (Sublime)</h3>
+                    <p class="card-category">Eau de Parfum • Fruity Oud</p>
+                    <p class="card-notes-preview">Manzana, Lichi, Rosa, Ciruela, Oud &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(16)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Bade'e Al Oud (Honor &amp; Glory)</h3>
+                    <p class="card-category">Eau de Parfum • Gourmand</p>
+                    <p class="card-notes-preview">Piña, Brûlée de Vainilla, Canela, Sándalo &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(17)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Qaed Al Fursan</h3>
+                    <p class="card-category">Eau de Parfum • Tropical Woody</p>
+                    <p class="card-notes-preview">Piña, Azafrán, Abedul, Jazmín &amp; Madera de Oud</p>
+                    <button class="btn-card-action" onclick="openModal(18)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Qaed Al Fursan Unlimited</h3>
+                    <p class="card-category">Eau de Parfum • Coconut Gourmand</p>
+                    <p class="card-notes-preview">Coco, Cítricos, Ylang-Ylang, Vainilla &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(19)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Nebras</h3>
+                    <p class="card-category">Eau de Parfum • Vanilla Gourmand</p>
+                    <p class="card-notes-preview">Bayas Rojas, Mandarina, Cacao, Vainilla &amp; Azúcar</p>
+                    <button class="btn-card-action" onclick="openModal(20)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">CLASICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Raghba</h3>
+                    <p class="card-category">Eau de Parfum • Oriental Woody</p>
+                    <p class="card-notes-preview">Vainilla, Oud, Azúcar, Incienso &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(21)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">INTENSE</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Raghba Wood Intense</h3>
+                    <p class="card-category">Eau de Parfum • Smoky Wood</p>
+                    <p class="card-notes-preview">Cedro, Madera de Guayaco, Oud, Caramelo &amp; Incienso</p>
+                    <button class="btn-card-action" onclick="openModal(22)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">VERSATIL</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Ana Abiyedh</h3>
+                    <p class="card-category">Eau de Parfum • Clean Musk</p>
+                    <p class="card-notes-preview">Almizcle Blanco, Cítricos, Naranja, Vainilla &amp; Cachemira</p>
+                    <button class="btn-card-action" onclick="openModal(23)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Ana Abiyedh Rouge</h3>
+                    <p class="card-category">Eau de Parfum • Amber Floral</p>
+                    <p class="card-notes-preview">Nashi Pera, Kumquat, Bergamota, Geranio &amp; Ámbar Gris</p>
+                    <button class="btn-card-action" onclick="openModal(24)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Maahir Legacy</h3>
+                    <p class="card-category">Eau de Parfum • Fresh Spicy</p>
+                    <p class="card-notes-preview">Menta, Lima, Lavanda, Lavandín &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(25)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Maahir Black Edition</h3>
+                    <p class="card-category">Eau de Parfum • Dark Smoky</p>
+                    <p class="card-notes-preview">Pimienta Negra, Tabaco, Cuero, Incienso &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(26)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Vintage Radio</h3>
+                    <p class="card-category">Eau de Parfum • Woody Fruity</p>
+                    <p class="card-notes-preview">Ciruela, Lavanda, Pimienta, Palo Santo &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(27)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Ramz Silver</h3>
+                    <p class="card-category">Eau de Parfum • Oriental Fresh</p>
+                    <p class="card-notes-preview">Menta, Lavanda, Bergamota, Vainilla &amp; Madera</p>
+                    <button class="btn-card-action" onclick="openModal(28)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">INTENSE</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Ameer Al Oudh Intense Oud</h3>
+                    <p class="card-category">Eau de Parfum • Rich Oud</p>
+                    <p class="card-notes-preview">Notas Amaderadas, Oud, Vainilla, Azúcar &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(29)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Mayar</h3>
+                    <p class="card-category">Eau de Parfum • Fruity Floral</p>
+                    <p class="card-notes-preview">Frambuesa, Lichi, Jazmín, Rosa &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(30)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Haya</h3>
+                    <p class="card-category">Eau de Parfum • Sparkling Floral</p>
+                    <p class="card-notes-preview">Champán, Frutas, Orquídea, Sándalo &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(31)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Liam Grey</h3>
+                    <p class="card-category">Eau de Parfum • Woody Aromatic</p>
+                    <p class="card-notes-preview">Higo, Cardamomo, Té Negro, Iris &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(32)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Jasoor</h3>
+                    <p class="card-category">Eau de Parfum • Spicy Leather</p>
+                    <p class="card-notes-preview">Manzana, Bergamota, Tabaco, Cuero &amp; Pachulí</p>
+                    <button class="btn-card-action" onclick="openModal(33)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Ajwad</h3>
+                    <p class="card-category">Eau de Parfum • Rose Woody</p>
+                    <p class="card-notes-preview">Notas Frutales, Rosa, Jazmín, Cedro &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(34)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">CLASICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Lattafa – Musk Mood</h3>
+                    <p class="card-category">Eau de Parfum • Soft Musk</p>
+                    <p class="card-notes-preview">Cítricos, Frutas, Almizcle Blanco, Flores &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(35)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Intense Man</h3>
+                    <p class="card-category">Eau de Parfum • Woody Spicy</p>
+                    <p class="card-notes-preview">Limón, Piña, Bergamota, Abedul, Jazmín &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(36)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Intense Woman</h3>
+                    <p class="card-category">Eau de Parfum • Floral Chypre</p>
+                    <p class="card-notes-preview">Azafrán, Rosa, Geranio, Vainilla &amp; Pachulí</p>
+                    <button class="btn-card-action" onclick="openModal(37)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Milestone</h3>
+                    <p class="card-category">Eau de Parfum • Marine Aquatic</p>
+                    <p class="card-notes-preview">Notas Marinas, Frutas, Sal Marina, Iris &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(38)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Sillage</h3>
+                    <p class="card-category">Eau de Parfum • Metallic Citrus</p>
+                    <p class="card-notes-preview">Bergamota, Grosella Negra, Violeta, Sándalo &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(39)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Untold</h3>
+                    <p class="card-category">Eau de Parfum • Amber Floral</p>
+                    <p class="card-notes-preview">Azafrán, Jazmín, Madera de Ámbar, Abeto &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(40)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Urban Man Elixir</h3>
+                    <p class="card-category">Eau de Parfum • Aromatic Fougère</p>
+                    <p class="card-notes-preview">Bergamota, Pimienta Rosa, Lavanda, Ambroxan &amp; Pachulí</p>
+                    <button class="btn-card-action" onclick="openModal(41)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Blue Iconic</h3>
+                    <p class="card-category">Eau de Parfum • Aquatic Woody</p>
+                    <p class="card-notes-preview">Toronja, Limón, menta, Jengibre, Incienso &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(42)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Precieux</h3>
+                    <p class="card-category">Extrait de Parfum • Niche Blend</p>
+                    <p class="card-notes-preview">Piña, Caramel, Cuero, Oud &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(43)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Club de Nuit Imperiale</h3>
+                    <p class="card-category">Eau de Parfum • Rose Vanilla</p>
+                    <p class="card-notes-preview">Lichi, Bergamota, Rosa Turca, Vainilla &amp; Cachemira</p>
+                    <button class="btn-card-action" onclick="openModal(44)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Odyssey Mandarin Sky</h3>
+                    <p class="card-category">Eau de Parfum • Citrus Gourmand</p>
+                    <p class="card-notes-preview">Mandarina, Naranja, Salvia, Caramelo &amp; Haba Tonka</p>
+                    <button class="btn-card-action" onclick="openModal(45)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Odyssey Homme</h3>
+                    <p class="card-category">Eau de Parfum • Oriental Spicy</p>
+                    <p class="card-notes-preview">Vainilla, Ámbar, Especias, Cuero &amp; Iris</p>
+                    <button class="btn-card-action" onclick="openModal(46)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Odyssey Homme White Edition</h3>
+                    <p class="card-category">Eau de Parfum • Fresh Amber</p>
+                    <p class="card-notes-preview">Yuzu, Pimienta Rosa, Violeta, Ámbar &amp; Haba Tonka</p>
+                    <button class="btn-card-action" onclick="openModal(47)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Odyssey Mega</h3>
+                    <p class="card-category">Eau de Parfum • Fresh Aquatic</p>
+                    <p class="card-notes-preview">Jengibre, Bergamota, Limón, Notas Marinas &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(48)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">CLASICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Craze</h3>
+                    <p class="card-category">Eau de Parfum • Oriental Almond</p>
+                    <p class="card-notes-preview">Almendra Amarga, Comino, Heliotropo, Vainilla &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(49)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">CLASICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Tres Nuit</h3>
+                    <p class="card-category">Eau de Parfum • Green Aromatic</p>
+                    <p class="card-notes-preview">Iris, Verbena de Olor, Limón, Lavanda &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(50)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Armaf – Hunter Intense</h3>
+                    <p class="card-category">Eau de Parfum • Woody Floral</p>
+                    <p class="card-notes-preview">Cardamomo, agujas de Pino, Cedro, Cuero &amp; Vetiver</p>
+                    <button class="btn-card-action" onclick="openModal(51)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – 9PM</h3>
+                    <p class="card-category">Eau de Parfum • Sweet Oriental</p>
+                    <p class="card-notes-preview">Manzana, Canela, Lavendín, Vainilla &amp; Haba Tonka</p>
+                    <button class="btn-card-action" onclick="openModal(52)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – 9AM Dive</h3>
+                    <p class="card-category">Eau de Parfum • Aquatic Fresh</p>
+                    <p class="card-notes-preview">Menta, Limón, Grosella Negra, Manzana &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(53)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – Supremacy Not Only Intense</h3>
+                    <p class="card-category">Extrait de Parfum • Smoky Fruity</p>
+                    <p class="card-notes-preview">Grosella Negra, Manzana, Bergamota, Roble &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(54)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">CLASICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – Supremacy Silver</h3>
+                    <p class="card-category">Eau de Parfum • Fruity Woody</p>
+                    <p class="card-notes-preview">Piña, Manzana, Bergamota, Abedul &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(55)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – Supremacy In Oud</h3>
+                    <p class="card-category">Eau de Parfum • Spicy Oud</p>
+                    <p class="card-notes-preview">Especias, Azafrán, Lavanda, Oud &amp; Pachulí</p>
+                    <button class="btn-card-action" onclick="openModal(56)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – Turathi Blue</h3>
+                    <p class="card-category">Eau de Parfum • Citrus Woody</p>
+                    <p class="card-notes-preview">Toronja, Notas Cítricas, Ambar Gris, Almizcle &amp; Notas Amaderadas</p>
+                    <button class="btn-card-action" onclick="openModal(57)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – Turathi Brown</h3>
+                    <p class="card-category">Eau de Parfum • Warm Spicy</p>
+                    <p class="card-notes-preview">Especias, Cuero, Tabaco, Vainilla &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(58)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – Modest Une</h3>
+                    <p class="card-category">Eau de Parfum • Spicy Woody</p>
+                    <p class="card-notes-preview">Pimienta, Lavanda, Incienso, Sándalo &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(59)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Afnan – Rare Carbon</h3>
+                    <p class="card-category">Eau de Parfum • Leather Intense</p>
+                    <p class="card-notes-preview">Cuero, Hojas de Violeta, Canela, Nuez Moscada &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(60)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Amber Oud Gold Edition</h3>
+                    <p class="card-category">Eau de Parfum • Fruity Gourmand</p>
+                    <p class="card-notes-preview">Notas Frutales, Bergamota, Melón, Vainilla &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(61)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Amber Oud Rouge</h3>
+                    <p class="card-category">Eau de Parfum • Amber Floral</p>
+                    <p class="card-notes-preview">Azafrán, Jazmín, Madera de Ámbar &amp; Abeto</p>
+                    <button class="btn-card-action" onclick="openModal(62)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Amber Oud Tobacco Edition</h3>
+                    <p class="card-category">Eau de Parfum • Tobacco Spice</p>
+                    <p class="card-notes-preview">Tabaco, Canela, Notas Especiadas, Vainilla &amp; Cacao</p>
+                    <button class="btn-card-action" onclick="openModal(63)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Amber Oud Carbon Edition</h3>
+                    <p class="card-category">Eau de Parfum • Aromatic Fougère</p>
+                    <p class="card-notes-preview">Lavanda, Bergamota, Rosas, Cedro &amp; Ámbar</p>
+                    <button class="btn-card-action" onclick="openModal(64)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Amber Oud Bleu Edition</h3>
+                    <p class="card-category">Eau de Parfum • Fresh Spicy</p>
+                    <p class="card-notes-preview">Toronja, Limón, Menta, Pimienta Rosa &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(65)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Amber Oud Aqua Dubai</h3>
+                    <p class="card-category">Eau de Parfum • Oceanic Fresh</p>
+                    <p class="card-notes-preview">Bergamota, Mandarina, Notas Marinas, Té Verde &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(66)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Detour Noir</h3>
+                    <p class="card-category">Eau de Parfum • Spicy Vanilla</p>
+                    <p class="card-notes-preview">Almendra, Pimienta Rosa, Jazmín, Vainilla &amp; Madera</p>
+                    <button class="btn-card-action" onclick="openModal(67)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">CLASICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – L'Aventure</h3>
+                    <p class="card-category">Eau de Parfum • Chypre Fruity</p>
+                    <p class="card-notes-preview">Elemi, Bergamota, Limón, Jazmín, Pachulí &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(68)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – L'Aventure Knight</h3>
+                    <p class="card-category">Eau de Parfum • Aromatic Woody</p>
+                    <p class="card-notes-preview">Té, Bergamota, Lavanda, Cuero &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(69)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Haramain – Junoon Noir</h3>
+                    <p class="card-category">Eau de Parfum • Powdery Floral</p>
+                    <p class="card-notes-preview">Flor de Naranjo, Bayas, Iris, Almizcle &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(70)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Rasasi – Hawas For Him</h3>
+                    <p class="card-category">Eau de Parfum • Aquatic Fruity</p>
+                    <p class="card-notes-preview">Manzana, Canela, Limón, Ciruela, Ámbar Gris &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(71)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Rasasi – Hawas Ice</h3>
+                    <p class="card-category">Eau de Parfum • Frosted Aquatic</p>
+                    <p class="card-notes-preview">Manzana, Limón, Menta Helada, Flor de Naranjo &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(72)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Rasasi – La Yuqawam Homme</h3>
+                    <p class="card-category">Eau de Parfum • Leather Masterpiece</p>
+                    <p class="card-notes-preview">Tomillo, Azafrán, Frambuesa, Cuero &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(73)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Rasasi – Shuhrah Pour Homme</h3>
+                    <p class="card-category">Eau de Parfum • Woody Smoky</p>
+                    <p class="card-notes-preview">Tomillo, Hoja de Tomate, Rosa, Oud &amp; Cuero</p>
+                    <button class="btn-card-action" onclick="openModal(74)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Rasasi – Daarej Pour Homme</h3>
+                    <p class="card-category">Eau de Parfum • Spicy Vanilla</p>
+                    <p class="card-notes-preview">Cardamomo, Artemisa, Comino, Vainilla &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(75)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Rasasi – Qasamat Rasana</h3>
+                    <p class="card-category">Eau de Parfum • Fruity Woody</p>
+                    <p class="card-notes-preview">Manzana, Bergamota, Limón, Cuero, Oud &amp; Cedro</p>
+                    <button class="btn-card-action" onclick="openModal(76)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Rasasi – Sotoor Taa</h3>
+                    <p class="card-category">Eau de Parfum • Oriental Spicy</p>
+                    <p class="card-notes-preview">Neroli, Pimienta, Canela, Cuero &amp; Sándalo</p>
+                    <button class="btn-card-action" onclick="openModal(77)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Jean Lowe Immortel</h3>
+                    <p class="card-category">Eau de Parfum • Amber Citrus</p>
+                    <p class="card-notes-preview">Jengibre, Toronja, Bergamota, Amber &amp; Especias</p>
+                    <button class="btn-card-action" onclick="openModal(78)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Jean Lowe Noir</h3>
+                    <p class="card-category">Eau de Parfum • Smoky Oud</p>
+                    <p class="card-notes-preview">Incienso, Oud, Cuero, Especias &amp; Maderas</p>
+                    <button class="btn-card-action" onclick="openModal(79)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Kismet Angel</h3>
+                    <p class="card-category">Eau de Parfum • Cognac Gourmand</p>
+                    <p class="card-notes-preview">Licor, Miel, Canela, Vainilla &amp; Haba Tonka</p>
+                    <button class="btn-card-action" onclick="openModal(80)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Kismet for Men</h3>
+                    <p class="card-category">Eau de Parfum • Woody Chypre</p>
+                    <p class="card-notes-preview">Notas Amaderadas, Nuez Moscada, Pachulí, Vainilla &amp; Cacao</p>
+                    <button class="btn-card-action" onclick="openModal(81)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Porto Neroli</h3>
+                    <p class="card-category">Eau de Parfum • Citrus Aquatic</p>
+                    <p class="card-notes-preview">Neroli, Mandarina, Limón, Lavanda &amp; Ámbar</p>
+                    <button class="btn-card-action" onclick="openModal(82)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Tobacco Touch</h3>
+                    <p class="card-category">Eau de Parfum • Warm Tobacco</p>
+                    <p class="card-notes-preview">Hojas de Tabaco, Especias, Vainilla, Cacao &amp; Frutos Secos</p>
+                    <button class="btn-card-action" onclick="openModal(83)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Lovely Cherie</h3>
+                    <p class="card-category">Eau de Parfum • Cherry Gourmand</p>
+                    <p class="card-notes-preview">Cereza Negra, Licor, Almendra Amarga, Rosa &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(84)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Delilah</h3>
+                    <p class="card-category">Eau de Parfum • Floral Rose</p>
+                    <p class="card-notes-preview">Rival, Lichi, Bergamota, Rosa Turca &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(85)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Maison Alhambra – Sceptre Malachite</h3>
+                    <p class="card-category">Eau de Parfum • Green Ambery</p>
+                    <p class="card-notes-preview">Mandarina, Bergamota, Notas Verdes, Ámbar &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(86)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">French Avenue – Liquid Brun</h3>
+                    <p class="card-category">Eau de Parfum • Luxury Gourmand</p>
+                    <p class="card-notes-preview">Canela, Cardamomo, Flor de Naranjo, Vainilla &amp; Bourbon</p>
+                    <button class="btn-card-action" onclick="openModal(87)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">French Avenue – Vulcan Feu</h3>
+                    <p class="card-category">Eau de Parfum • Intense Woody</p>
+                    <p class="card-notes-preview">Especias, Incienso, Maderas Preciosas, Cuero &amp; Ámbar</p>
+                    <button class="btn-card-action" onclick="openModal(88)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">French Avenue – Azzure Oud</h3>
+                    <p class="card-category">Eau de Parfum • Aquatic Oud</p>
+                    <p class="card-notes-preview">Notas Marinas, Cítricos, Oud Suave, Ámbar &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(89)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Paris Corner – Khair Pistachio</h3>
+                    <p class="card-category">Eau de Parfum • Pistachio Gourmand</p>
+                    <p class="card-notes-preview">Pistacho, Helado, Avellana, Ron, Vainilla &amp; Crema</p>
+                    <button class="btn-card-action" onclick="openModal(90)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Paris Corner – Caramel Cascade</h3>
+                    <p class="card-category">Eau de Parfum • Rich Caramel</p>
+                    <p class="card-notes-preview">Caramela, Vainilla, Leche, Azúcar &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(91)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Paris Corner – Emir Celestial</h3>
+                    <p class="card-category">Eau de Parfum • Niche Aquatic</p>
+                    <p class="card-notes-preview">Mandarina, Notas Marinas, Grosella, Té &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(92)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Paris Corner – Rifaaqat</h3>
+                    <p class="card-category">Eau de Parfum • Spicy Vanilla</p>
+                    <p class="card-notes-preview">Pimienta Rosa, Elemi, Vainilla, Ámbar &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(93)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">ICONICO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Swiss Arabian – Shaghaf Oud</h3>
+                    <p class="card-category">Eau de Parfum • Oud Praliné</p>
+                    <p class="card-notes-preview">Azafrán, Rosa, Oud, Praliné &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(94)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Swiss Arabian – Shaghaf Oud Azraq</h3>
+                    <p class="card-category">Eau de Parfum • Honey Oud</p>
+                    <p class="card-notes-preview">Miel, Oud, Canela, Vainilla &amp; Ámbar</p>
+                    <button class="btn-card-action" onclick="openModal(95)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">NUEVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Swiss Arabian – Shaghaf Oud Tonka</h3>
+                    <p class="card-category">Eau de Parfum • Tonka Gourmand</p>
+                    <p class="card-notes-preview">Almendra, Haba Tonka, Canela, Vainilla &amp; Oud</p>
+                    <button class="btn-card-action" onclick="openModal(96)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Wataniah – Sabah Al Ward</h3>
+                    <p class="card-category">Eau de Parfum • Floral Sweet</p>
+                    <p class="card-notes-preview">Pimienta Rosa, Mandarina, Azahar, Vainilla &amp; Haba Tonka</p>
+                    <button class="btn-card-action" onclick="openModal(97)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">EXCLUSIVO</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Wataniah – Durrat Al Aroos</h3>
+                    <p class="card-category">Eau de Parfum • Musk Cream</p>
+                    <p class="card-notes-preview">Almizcle Blanco, Notas Cremosas, Madera de Oud &amp; Ambar</p>
+                    <button class="btn-card-action" onclick="openModal(98)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">POPULAR</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Al Wataniah – Watani</h3>
+                    <p class="card-category">Eau de Parfum • Fruity Oriental</p>
+                    <p class="card-notes-preview">Frutas Exóticas, Notas Cítricas, Jazmín &amp; Almizcle</p>
+                    <button class="btn-card-action" onclick="openModal(99)">Vista Rápida</button>
+                </div>
+            </article><article class="product-card">
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">BEST SELLER</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">Asdaaf – Ameerat Al Arab</h3>
+                    <p class="card-category">Eau de Parfum • Fruity Floral</p>
+                    <p class="card-notes-preview">Uvas, Naranja, Almizcle Blanco, Rosa &amp; Vainilla</p>
+                    <button class="btn-card-action" onclick="openModal(100)">Vista Rápida</button>
+                </div>
+            </article></div>
+    </section>
+
+    <!-- INTERACTIVE QUICK VIEW MODAL -->
+    <div class="modal-overlay" id="quickModal">
+        <div class="modal-container">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2 class="modal-title" id="modalTitle">FRAGANCIA</h2>
+            <p class="modal-subtitle" id="modalCategory">Extrait de Parfum • 100ml</p>
+            <p class="modal-desc" id="modalDesc">Descripción sensorial de la fragancia...</p>
+
+            <div class="pyramid-title">Pirámide Olfativa</div>
+            <div class="pyramid-grid">
+                <div class="pyramid-item"><span>Salida:</span> <span id="pyramidTop">Notas de salida...</span></div>
+                <div class="pyramid-item"><span>Corazón:</span> <span id="pyramidHeart">Notas de corazón...</span></div>
+                <div class="pyramid-item"><span>Fondo:</span> <span id="pyramidBase">Notas de fondo...</span></div>
+            </div>
+
+            <a href="file:///C:/Users/Ricardo%20Cardona/OneDrive/miweb-3/index.html#" id="modalWaBtn" target="_blank" class="btn-gold" style="width: 100%; text-align: center; justify-content: center;">Cotizar por WhatsApp</a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" id="esencia">
+        <div class="footer-brand">FRAGRANCE PARFUM</div>
+        <p class="footer-info">San Pedro Sula, Honduras</p>
+        <a href="https://wa.me/50498314942?text=Hola%20Fragrance%20Parfum,%20quiero%20cotizar%20un%20parfum." target="_blank" class="footer-phone">+504 9831-4942</a>
+    </footer>
+
+    <!-- JAVASCRIPT: DATA ARRAY, THREE.JS 3D BOTTLE, & INTERACTIONS -->
+    <script>
+        const parfums = [
+            { id: 1, name: "Lattafa – Khamrah", category: "Extrait de Parfum • Oriental", badge: "EXCLUSIVO", previewNotes: "Canela, Nuez Moscada, Vainilla & Madera de Oud", description: "Una obra maestra especiada y gourmand que envuelve los sentidos con acordes cálidos de canela, nuez moscada y una cremosa vainilla.", top: "Canela, Nuez Moscada, Bergamota", heart: "Dátiles, Praliné, Nardos, Mahonial", base: "Vainilla, Haba Tonka, Madera de Ámbar, Mirra" },
+            { id: 2, name: "Lattafa – Khamrah Qahwa", category: "Extrait de Parfum • Gourmand", badge: "BEST SELLER", previewNotes: "Café, Canela, Cardamomo, Vainilla & Almizcle", description: "La evolución perfecta de Khamrah con un adictivo toque de café arábigo recién tostado y especias profundas.", top: "Cardamomo, Jengibre, Canela", heart: "Café, Praliné, Frutas Canditas", base: "Vainilla, Haba Tonka, Benjuí, Almizcle" },
+            { id: 3, name: "Lattafa – Asad", category: "Eau de Parfum • Intense", badge: "POPULAR", previewNotes: "Pimienta Negra, Tabaco, Piña, Vainilla & Café", description: "Potente, varonil y sofisticado. Un aroma especiado y amaderado con un carácter imponente.", top: "Pimienta Negra, Tabaco, Piña", heart: "Café, Pachulí, Iris", base: "Ámbar, Vainilla, Madera Seca, Benjuí" },
+            { id: 4, name: "Lattafa – Asad Zanzibar", category: "Eau de Parfum • Aquatic", badge: "NUEVO", previewNotes: "Lavanda, Agua de Coco, Sal, Iris & Vainilla", description: "Una reinterpretación marina y tropical con notas saladas de coco y una elegancia polvosa de iris.", top: "Lavanda, Pimienta Negra", heart: "Agua de Coco, Sal, Iris", base: "Vainilla, Incienso" },
+            { id: 5, name: "Lattafa – Asad Bourbon", category: "Eau de Parfum • Woody", badge: "EXCLUSIVO", previewNotes: "Bourbon, Especias, Cuero & Maderas Preciosas", description: "Un perfil cálido y licoroso inspirado en la elegancia del bourbon envejecido en barricas de roble.", top: "Especias Frescas, Licor de Bourbon", heart: "Cuero, Madera de Cedro, Vetiver", base: "Ámbar, Almizcle Blanco, Haba Tonka" },
+            { id: 6, name: "Lattafa – Yara (Rosa)", category: "Eau de Parfum • Floral", badge: "BEST SELLER", previewNotes: "Orquídea, Heliotropo, Tangerina, Vainilla & Almizcle", description: "Suave, cremoso y sumamente femenino. Un aroma empolvado que enamora desde el primer instante.", top: "Tangerina, Heliotropo, Orquídea", heart: "Notas Gourmand, Frutas Tropicales", base: "Vainilla, Sándalo, Almizcle" },
+            { id: 7, name: "Lattafa – Yara Tous", category: "Eau de Parfum • Tropical", badge: "NUEVO", previewNotes: "Mango, Coco, Maracuyá, Jazmín & Vainilla", description: "Una explosión tropical soleada y alegre con jugosas notas de mango, maracuyá y coco cremoso.", top: "Mango, Coco, Maracuyá", heart: "Jazmín, Flor de Naranjo, Heliotropo", base: "Vainilla, Cachemira, Almizcle" },
+            { id: 8, name: "Lattafa – Yara Moi", category: "Eau de Parfum • Amber", badge: "EXCLUSIVO", previewNotes: "Jazmín, Durazno, Caramelo, Pachulí & Sándalo", description: "Elegante y enigmático. Un corazón ambarino con matices dulces de caramelo y durazno aterciopelado.", top: "Jazmín, Durazno", heart: "Caramelo, Ámbar", base: "Pachulí, Sándalo" },
+            { id: 9, name: "Lattafa – Yara Candy", category: "Eau de Parfum • Fruity", badge: "EDICIÓN LIMITADA", previewNotes: "Caramelo de Fresa, Frutas Rojas, Vainilla & Sándalo", description: "Dulce, jugoso y divertido. Un tributo a las golosinas finas y las frutas rojas más selectas.", top: "Fresa, Frutas Rojas", heart: "Caramelo, Almíbar Floral", base: "Vainilla, Sándalo, Almizcle" },
+            { id: 10, name: "Lattafa – Eclaire", category: "Extrait de Parfum • Gourmand", badge: "FAVORITO", previewNotes: "Caramelo, Leche, Miel, Flores Blancas & Vainilla", description: "Una cremosa y deliciosa fragancia gourmand que recrea un exquisito postre francés de caramelo y miel.", top: "Caramelo, Leche, Azúcar", heart: "Miel, Flores Blancas", base: "Vainilla, Praliné, Almizcle" },
+            { id: 11, name: "Lattafa – Fakhar Black", category: "Eau de Parfum • Fougère", badge: "BEST SELLER", previewNotes: "Manzana, Bergamota, Lavanda, Especias & Vetiver", description: "Inspirado en la elegancia moderna. Una combinación fresca, especiada y amaderada de alto rendimiento.", top: "Manzana, Bergamota, Jengibre", heart: "Lavanda, Salvia, Enebro, Geranio", base: "Haba Tonka, Amberwood, Cedro, Vetiver" },
+            { id: 12, name: "Lattafa – Fakhar Rose", category: "Eau de Parfum • Floral", badge: "POPULAR", previewNotes: "Lirios, Jazmín, Tardos, Vainilla & Pachulí", description: "Un bouquet floral blanco deslumbrante, elegante y sofisticado para cualquier ocasión especial.", top: "Frutas, Granada, Lirios", heart: "Jazmín, Tardo, Madreselva, Rosa", base: "Vainilla, Sándalo, Pachulí, Ambroxan" },
+            { id: 13, name: "Lattafa – Fakhar Extrait", category: "Extrait de Parfum • Intense", badge: "EXCLUSIVO", previewNotes: "Bergamota, Pimienta, Tabaco, Cuero & Ámbar", description: "Versión más concentrada y profunda de Fakhar, acentuando notas de cuero y tabaco fino.", top: "Bergamota, Pimienta Rosa, Elemi", heart: "Tabaco, Cuero, Canela, Rosa", base: "Ámbar, Cedro, Pachulí, Vainilla" },
+            { id: 14, name: "Lattafa – Bade'e Al Oud (Oud for Glory)", category: "Eau de Parfum • Woody Oud", badge: "ICONICO", previewNotes: "Azafrán, Nuez Moscada, Lavanda, Oud & Pachulí", description: "Misterioso, lujoso y potente. Un tributo magistral a la madera de oud combinada con especias orientales.", top: "Azafrán, Nuez Moscada, Lavanda", heart: "Oud Natural, Pachulí", base: "Oud, Pachulí, Almizcle" },
+            { id: 15, name: "Lattafa – Bade'e Al Oud (Amethyst)", category: "Eau de Parfum • Floral Oud", badge: "EXCLUSIVO", previewNotes: "Pimienta Rosa, Bergamota, Rosa de Bulgaria, Oud & Ámbar", description: "Una fusión fascinante de rosas opulentas y oud con un fondo ambarino y avainillado.", top: "Pimienta Rosa, Bergamota", heart: "Rosa Turca, Rosa de Bulgaria, Jazmín", base: "Oud, Ámbar, Vainilla" },
+            { id: 16, name: "Lattafa – Bade'e Al Oud (Sublime)", category: "Eau de Parfum • Fruity Oud", badge: "POPULAR", previewNotes: "Manzana, Lichi, Rosa, Ciruela, Oud & Vainilla", description: "Una salida frutal vibrante y jugosa que contrasta elegantemente con un corazón de rosas y base de oud suave.", top: "Manzana, Lichi, Rosa, Ciruela", heart: "Jazmín, Muguet", base: "Oud, Vainilla, Musgo, Pachulí" },
+            { id: 17, name: "Lattafa – Bade'e Al Oud (Honor & Glory)", category: "Eau de Parfum • Gourmand", badge: "BEST SELLER", previewNotes: "Piña, Brûlée de Vainilla, Canela, Sándalo & Oud", description: "Exótico y delicioso aroma con notas de piña caramelizada y crema brûlée sobre una base amaderada.", top: "Piña, Brûlée de Vainilla", heart: "Benjuí, Cúrcuma, Canela", base: "Sándalo, Vainilla, Cachemira, Oud" },
+            { id: 18, name: "Lattafa – Qaed Al Fursan", category: "Eau de Parfum • Tropical Woody", badge: "BEST SELLER", previewNotes: "Piña, Azafrán, Abedul, Jazmín & Madera de Oud", description: "Frutal y ahumado a la vez. Su nota predominante de piña jugosa sobre fondo de abedul cautiva a todos.", top: "Piña, Bayas de Azafrán", heart: "Abedul, Jazmín, Abeto", base: "Ámbar, Almizcle, Oud, Cedro" },
+            { id: 19, name: "Lattafa – Qaed Al Fursan Unlimited", category: "Eau de Parfum • Coconut Gourmand", badge: "POPULAR", previewNotes: "Coco, Cítricos, Ylang-Ylang, Vainilla & Sándalo", description: "Una crema solar lujosa y avainillada con acordes tropicales de coco y flores blancas.", top: "Coco, Cítricos, Piña", heart: "Ylang-Ylang, Jazmín, Frangipani", base: "Vainilla, Sándalo, Almizcle" },
+            { id: 20, name: "Lattafa – Nebras", category: "Eau de Parfum • Vanilla Gourmand", badge: "ICONICO", previewNotes: "Bayas Rojas, Mandarina, Cacao, Vainilla & Azúcar", description: "Inspirado en los perfiles más exclusivos de vainilla y cacao. Dulce, cálido y envolvente.", top: "Bayas Rojas, Mandarina", heart: "Cacao, Rosa, Davana", base: "Vainilla, Azúcar, Ámbar, Almizcle" },
+            { id: 21, name: "Lattafa – Raghba", category: "Eau de Parfum • Oriental Woody", badge: "CLASICO", previewNotes: "Vainilla, Oud, Azúcar, Incienso & Sándalo", description: "Un clásico legendario de la perfumería árabe. Dulce, ahumado, con notas intensas de vainilla y oud.", top: "Azúcar, Oud", heart: "Incienso, Madera de Sándalo", base: "Vainilla, Ámbar, Almizcle" },
+            { id: 22, name: "Lattafa – Raghba Wood Intense", category: "Eau de Parfum • Smoky Wood", badge: "INTENSE", previewNotes: "Cedro, Madera de Guayaco, Oud, Caramelo & Incienso", description: "Versión intensificada con maderas ahumadas profundas y un toque sutil de caramelo tostado.", top: "Cedro, Madera de Guayaco, Regaliz, Caramelo", heart: "Oud, Sándalo, Pachulí", base: "Incienso, Ámbar, Vainilla, Roble" },
+            { id: 23, name: "Lattafa – Ana Abiyedh", category: "Eau de Parfum • Clean Musk", badge: "VERSATIL", previewNotes: "Almizcle Blanco, Cítricos, Naranja, Vainilla & Cachemira", description: "Limpieza, frescura y elegancia almizclada. Deja una estela pulcra y adictiva en la piel.", top: "Almizcle Blanco, Naranja Cítrica", heart: "Vainilla, Especias Suaves", base: "Cachemira, Oud Blanco, Ámbar" },
+            { id: 24, name: "Lattafa – Ana Abiyedh Rouge", category: "Eau de Parfum • Amber Floral", badge: "BEST SELLER", previewNotes: "Nashi Pera, Kumquat, Bergamota, Geranio & Ámbar Gris", description: "Sofisticado aroma ambarino y especiado con facetas dulces y almizcladas de altísimo nivel.", top: "Nashi Pera, Kumquat, Bergamota", heart: "Geranio, Cardamomo, Cilantro", base: "Ámbar Gris, Musgo de Roble, Almizcle" },
+            { id: 25, name: "Lattafa – Maahir Legacy", category: "Eau de Parfum • Fresh Spicy", badge: "POPULAR", previewNotes: "Menta, Lima, Lavanda, Lavandín & Cedro", description: "Refrescante, enérgico y moderno. Un cóctel cítrico y mentolado con un secado amaderado de lujo.", top: "Menta, Lima, Lavanda, Pomelo, Piña", heart: "Bayas de Enebro, Romero, Geranio, Incienso", base: "Cedro, Musgo de Roble, Vetiver, Haba Tonka" },
+            { id: 26, name: "Lattafa – Maahir Black Edition", category: "Eau de Parfum • Dark Smoky", badge: "EXCLUSIVO", previewNotes: "Pimienta Negra, Tabaco, Cuero, Incienso & Oud", description: "Oscuro, ahumado, misterioso y dominante. Ideal para noches especiales y climas frescos.", top: "Pimienta Negra, Rosa, Bergamota", heart: "Incienso, Resinas, Cuero, Oud", base: "Bálsamo de Gurjum, Pachulí, Sándalo" },
+            { id: 27, name: "Lattafa – Vintage Radio", category: "Eau de Parfum • Woody Fruity", badge: "NUEVO", previewNotes: "Ciruela, Lavanda, Pimienta, Palo Santo & Sándalo", description: "Una fragancia moderna y artística que combina ciruela jugosa con la mística madera de Palo Santo.", top: "Ciruela, Lavanda, Bergamota", heart: "Pimienta Negra, Palo Santo, Flor de Naranjo", base: "Sándalo, Madera Ambarina" },
+            { id: 28, name: "Lattafa – Ramz Silver", category: "Eau de Parfum • Oriental Fresh", badge: "POPULAR", previewNotes: "Menta, Lavanda, Bergamota, Vainilla & Madera", description: "Divertido, magnético y seductor. Con un perfil fresco en la salida y un fondo cálido avainillado.", top: "Menta, Lavanda, Bergamota, Pera", heart: "Salvia, Cardamomo", base: "Vainilla, Almizcle, Pachulí, Cedro" },
+            { id: 29, name: "Lattafa – Ameer Al Oudh Intense Oud", category: "Eau de Parfum • Rich Oud", badge: "INTENSE", previewNotes: "Notas Amaderadas, Oud, Vainilla, Azúcar & Sándalo", description: "Rico, profundo y reconfortante. El equilibrio perfecto entre maderas orientales oscuras y dulzura cremosa.", top: "Notas Amaderadas, Oud", heart: "Azúcar, Vainilla", base: "Oud, Sándalo, Notas Herbales" },
+            { id: 30, name: "Lattafa – Mayar", category: "Eau de Parfum • Fruity Floral", badge: "NUEVO", previewNotes: "Frambuesa, Lichi, Jazmín, Rosa & Vainilla", description: "Fresco, frutal y radiante. Destaca por sus notas chispeantes de frambuesa y lichi sobre un fondo floral.", top: "Frambuesa, Lichi, Violeta", heart: "Rosa, Jazmín, Peonía", base: "Vainilla, Almizcle, Sándalo" },
+            { id: 31, name: "Lattafa – Haya", category: "Eau de Parfum • Sparkling Floral", badge: "POPULAR", previewNotes: "Champán, Frutas, Orquídea, Sándalo & Almizcle", description: "Elegante y chispeante con acordes frutales festivos y un corazón floral delicado.", top: "Champán, Mandarina, Frutas Rojas, Naranja", heart: "Orquídea, Jazmín, Gardenia", base: "Sándalo, Vainilla, Ámbar, Castaña" },
+            { id: 32, name: "Lattafa – Liam Grey", category: "Eau de Parfum • Woody Aromatic", badge: "EXCLUSIVO", previewNotes: "Higo, Cardamomo, Té Negro, Iris & Sándalo", description: "Sofisticado y terroso. Notas de té negro e higo con un corazón empolvado de iris de alta gama.", top: "Higo, Cardamomo, Té Negro", heart: "Iris, Líbano, Ámbar", base: "Sándalo, Haba Tonka, Cedro" },
+            { id: 33, name: "Lattafa – Jasoor", category: "Eau de Parfum • Spicy Leather", badge: "NUEVO", previewNotes: "Manzana, Bergamota, Tabaco, Cuero & Pachulí", description: "Atrevido y varonil. Combina frutas crujientes con un fondo oscuro de tabaco y cuero fino.", top: "Manzana, Bergamota, Cardamomo", heart: "Tabaco, Cuero, Lavanda", base: "Pachulí, Vetiver, Haba Tonka" },
+            { id: 34, name: "Lattafa – Ajwad", category: "Eau de Parfum • Rose Woody", badge: "BEST SELLER", previewNotes: "Notas Frutales, Rosa, Jazmín, Cedro & Almizcle", description: "Una fragancia adictiva y duradera que mezcla notas frutales exuberantes con un corazón de rosas y maderas.", top: "Notas Frutales, Bergamota", heart: "Rosa, Jazmín, Canela", base: "Cedro, Sándalo, Almizcle, Ámbar" },
+            { id: 35, name: "Lattafa – Musk Mood", category: "Eau de Parfum • Soft Musk", badge: "CLASICO", previewNotes: "Cítricos, Frutas, Almizcle Blanco, Flores & Vainilla", description: "Una caricia limpia, almizclada y reconfortante que se funde perfectamente con el PH de la piel.", top: "Cítricos, Frutas", heart: "Almizcle Blanco, Notas Florales, Vainilla", base: "Almizcle, Sándalo" },
+            { id: 36, name: "Armaf – Club de Nuit Intense Man", category: "Eau de Parfum • Woody Spicy", badge: "ICONICO", previewNotes: "Limón, Piña, Bergamota, Abedul, Jazmín & Almizcle", description: "El rey indiscutible de los perfumes masculinos. Cítricos ahumados, piña y maderas de proyección bestial.", top: "Limón, Piña, Bergamota, Grosella Negra, Manzana", heart: "Abedul, Jazmín, Rosa", base: "Almizcle, Ámbar Gris, Pachulí, Vainilla" },
+            { id: 37, name: "Armaf – Club de Nuit Intense Woman", category: "Eau de Parfum • Floral Chypre", badge: "BEST SELLER", previewNotes: "Azafrán, Rosa, Geranio, Vainilla & Pachulí", description: "Una fragancia femenina sumamente lujosa, elegante y nocturna con acordes opulentos de rosa y azafrán.", top: "Azafrán, Rosa, Geranio, Nuez Moscada", heart: "Violeta, Pimienta, Rosa, Alcaravea", base: "Pachulí, Vainilla, Oud, Ámbar" },
+            { id: 38, name: "Armaf – Club de Nuit Milestone", category: "Eau de Parfum • Marine Aquatic", badge: "POPULAR", previewNotes: "Notas Marinas, Frutas, Sal Marina, Iris & Almizcle", description: "Salado, fresco y sofisticado. Evoca la brisa marina y los atardeceres de lujo en la costa.", top: "Notas Marinas, Frutas, Bergamota", heart: "Violeta, Sándalo, Madera de Sándalo", base: "Almizcle, Notas Amaderadas, Vetiver" },
+            { id: 39, name: "Armaf – Club de Nuit Sillage", category: "Eau de Parfum • Metallic Citrus", badge: "EXCLUSIVO", previewNotes: "Bergamota, Grosella Negra, Violeta, Sándalo & Almizcle", description: "Crisp, metálico, limpio y sumamente elegante. Un aroma sofisticado con estela inigualable.", top: "Bergamota, Grosella Negra, Limón, Lima, Violeta, Jengibre", heart: "Iris, Jazmín, Rosa", base: "Almizcle, Ambroxan, Sándalo, Cedro" },
+            { id: 40, name: "Armaf – Club de Nuit Untold", category: "Eau de Parfum • Amber Floral", badge: "BEST SELLER", previewNotes: "Azafrán, Jazmín, Madera de Ámbar, Abeto & Cedro", description: "Lujoso, dulce y ambarino. Considerado uno de los perfiles más elegantes y magnéticos del mercado.", top: "Azafrán, Jazmín", heart: "Madera de Ámbar, Ámbar Gris", base: "Resina de Abeto, Cedro" },
+            { id: 41, name: "Armaf – Club de Nuit Urban Man Elixir", category: "Eau de Parfum • Aromatic Fougère", badge: "POPULAR", previewNotes: "Bergamota, Pimienta Rosa, Lavanda, Ambroxan & Pachulí", description: "Versátil, moderno y enérgico. Combina frescura especiada con un fondo ambarino varonil.", top: "Bergamota, Pimienta Rosa, Jazmín, Flor de Naranjo", heart: "Lavanda, Geranio, Elemi, Vetiver, Pachulí, Azafrán", base: "Ambroxan, Cedro, Pachulí, Ámbar, Láddano" },
+            { id: 42, name: "Armaf – Club de Nuit Blue Iconic", category: "Eau de Parfum • Aquatic Woody", badge: "NUEVO", previewNotes: "Toronja, Limón, menta, Jengibre, Incienso & Cedro", description: "Un azul de alta gama, enérgico, fresco y vibrante para destacar en cualquier entorno ejecutivo o casual.", top: "Toronja, Limón, Menta, Pimienta Rosa, Cilantro", heart: "Jengibre, Nuez Moscada, Jazmín, Melón", base: "Incienso, Ámbar, Cedro, Sándalo, Pachulí, Láddano" },
+            { id: 43, name: "Armaf – Club de Nuit Precieux", category: "Extrait de Parfum • Niche Blend", badge: "EXCLUSIVO", previewNotes: "Piña, Caramel, Cuero, Oud & Vainilla", description: "La cúspide de la colección Club de Nuit. Una mezcla de autor ultra refinada con matices frutales, cuero y maderas.", top: "Piña, Bergamota, Limón, Pera, Caramelo", heart: "Roble, Jazmín, Anís, lirios del valle", base: "Cuero, Pachulí, Vainilla, Oud, Ámbar, Almizcle" },
+            { id: 44, name: "Armaf – Club de Nuit Imperiale", category: "Eau de Parfum • Rose Vanilla", badge: "EXCLUSIVO", previewNotes: "Lichi, Bergamota, Rosa Turca, Vainilla & Cachemira", description: "Una obra de arte femenina con rosa turca opulenta, lichi jugoso y una vainilla avasallante.", top: "Lichi, Nuez Moscada, Bergamota", heart: "Rosa Turca, Peonía, Almizcle, Vainilla", base: "Vainilla, Incienso, Cachemira, Cedro" },
+            { id: 45, name: "Armaf – Odyssey Mandarin Sky", category: "Eau de Parfum • Citrus Gourmand", badge: "POPULAR", previewNotes: "Mandarina, Naranja, Salvia, Caramelo & Haba Tonka", description: "Un aroma brillante, dulce y adictivo con notas dominantes de mandarina chispeante y caramelo cremoso.", top: "Mandarina, Naranja, Azafrán", heart: "Caramelo, Salvia, Haba Tonka", base: "Ambroxan, Cedro" },
+            { id: 46, name: "Armaf – Odyssey Homme", category: "Eau de Parfum • Oriental Spicy", badge: "POPULAR", previewNotes: "Vainilla, Ámbar, Especias, Cuero & Iris", description: "Oscuro, especiado, misterioso y sumamente seductor con un potente acorde de vainilla ambarina.", top: "Vainilla, Pimienta Negra", heart: "Iris, Cuero, Especias", base: "Ámbar, Haba Tonka, Cedro" },
+            { id: 47, name: "Armaf – Odyssey Homme White Edition", category: "Eau de Parfum • Fresh Amber", badge: "NUEVO", previewNotes: "Yuzu, Pimienta Rosa, Violeta, Ámbar & Haba Tonka", description: "Una frescura cítrica japonesa combinada con especias y un secado cálido y acogedor.", top: "Yuzu, Pimienta Rosa, Limón", heart: "Hojas de Violeta, Neroli", base: "Ámbar, Haba Tonka, Madera de Guayaco" },
+            { id: 48, name: "Armaf – Odyssey Mega", category: "Eau de Parfum • Fresh Aquatic", badge: "POPULAR", previewNotes: "Jengibre, Bergamota, Limón, Notas Marinas & Cedro", description: "Vigoroso y revitalizante. Un perfume fresco y marino con una fijación excepcional.", top: "Jengibre, Bergamota, Limón, Menta, Manzana", heart: "Notas Marinas, Salvia, Geranio, Enebro", base: "Ámbar, Cedro, Vetiver, Haba Tonka" },
+            { id: 49, name: "Armaf – Craze", category: "Eau de Parfum • Oriental Almond", badge: "CLASICO", previewNotes: "Almendra Amarga, Comino, Heliotropo, Vainilla & Sándalo", description: "Elegante, almendrado y especiado. Una fragancia distinguida para hombres con clase.", top: "Almendra Amarga, Comino, Bergamota", heart: "Heliotropo, Jazmín, Lavanda", base: "Vainilla, Sándalo, Ámbar" },
+            { id: 50, name: "Armaf – Tres Nuit", category: "Eau de Parfum • Green Aromatic", badge: "CLASICO", previewNotes: "Iris, Verbena de Olor, Limón, Lavanda & Sándalo", description: "Fresco, verde y sumamente elegante. Un aroma clásico de limpieza y distinción.", top: "Verbena de Olor, Limón, Iris", heart: "Lavanda, Violeta, Especias", base: "Sándalo, Ámbar Gris, Cedro" },
+            { id: 51, name: "Armaf – Hunter Intense", category: "Eau de Parfum • Woody Floral", badge: "POPULAR", previewNotes: "Cardamomo, agujas de Pino, Cedro, Cuero & Vetiver", description: "Varonil, amaderado y con matices verdes y especiados de gran carácter.", top: "Cardamomo, Cedro, Limón, Agujas de Pino", heart: "Romero, Lavanda, Salvia, Violeta", base: "Cedro, Vetiver, Pachulí, Almizcle" },
+            { id: 52, name: "Afnan – 9PM", category: "Eau de Parfum • Sweet Oriental", badge: "ICONICO", previewNotes: "Manzana, Canela, Lavendín, Vainilla & Haba Tonka", description: "Divertido, nocturno y magnético. Con notas ultra dulces de vainilla, manzana y canela.", top: "Manzana, Canela, Lavanda, Bergamota", heart: "Flor de Naranjo, Lirio de los Valles", base: "Vainilla, Haba Tonka, Ámbar, Pachulí" },
+            { id: 53, name: "Afnan – 9AM Dive", category: "Eau de Parfum • Aquatic Fresh", badge: "BEST SELLER", previewNotes: "Menta, Limón, Grosella Negra, Manzana & Cedro", description: "Un azul moderno, chispeante y acuático con un rendimiento sobresaliente para uso diario.", top: "Menta, Limón, Grosella Negra, Pimienta Rosa", heart: "Manzana, Incienso, Cedro", base: "Jengibre, Sándalo, Pachulí, Jazmín" },
+            { id: 54, name: "Afnan – Supremacy Not Only Intense", category: "Extrait de Parfum • Smoky Fruity", badge: "ICONICO", previewNotes: "Grosella Negra, Manzana, Bergamota, Roble & Oud", description: "Una bestia de rendimiento. Frutal en la salida con un secado ahumado, oscuro y amaderado inigualable.", top: "Grosella Negra, Manzana, Bergamota", heart: "Musgo de Roble, Pachulí, Lavanda", base: "Ámbar Gris, Almizcle, Oud" },
+            { id: 55, name: "Afnan – Supremacy Silver", category: "Eau de Parfum • Fruity Woody", badge: "CLASICO", previewNotes: "Piña, Manzana, Bergamota, Abedul & Almizcle", description: "Un referente de elegancia masculina con acordes frutales y ahumados de alta calidad.", top: "Piña, Manzana, Bergamota, Grosella Negra", heart: "Abedul, Pachulí, Jazmín, Rosa", base: "Almizcle, Ámbar Gris, Musgo de Roble, Vainilla" },
+            { id: 56, name: "Afnan – Supremacy In Oud", category: "Eau de Parfum • Spicy Oud", badge: "EXCLUSIVO", previewNotes: "Especias, Azafrán, Lavanda, Oud & Pachulí", description: "Oud cálido, especiado y refinado con un toque gourmand y gran duración.", top: "Especias, Azafrán, Nuez Moscada", heart: "Oud, Lavanda", base: "Pachulí, Almizcle" },
+            { id: 57, name: "Afnan – Turathi Blue", category: "Eau de Parfum • Citrus Woody", badge: "BEST SELLER", previewNotes: "Toronja, Notas Cítricas, Ambar Gris, Almizcle & Notas Amaderadas", description: "Cítrico, lujoso, almizclado y sumamente adictivo. Un perfil moderno muy elogiado.", top: "Notas Cítricas, Toronja", heart: "Ambar Gris, Notas Amaderadas", base: "Almizcle, Pachulí, Especias" },
+            { id: 58, name: "Afnan – Turathi Brown", category: "Eau de Parfum • Warm Spicy", badge: "POPULAR", previewNotes: "Especias, Cuero, Tabaco, Vainilla & Oud", description: "Cálido, especiado y con notas de cuero fino y tabaco aromático.", top: "Especias Frescas, Bergamota", heart: "Cuero, Tabaco, Madera", base: "Vainilla, Ámbar, Oud" },
+            { id: 59, name: "Afnan – Modest Une", category: "Eau de Parfum • Spicy Woody", badge: "POPULAR", previewNotes: "Pimienta, Lavanda, Incienso, Sándalo & Cedro", description: "Sofisticado y especiado con un corazón ahumado y base de maderas nobles.", top: "Pimienta, Lavanda, Nuez Moscada", heart: "Incienso, Cedro, Cuero", base: "Sándalo, Almizcle" },
+            { id: 60, name: "Afnan – Rare Carbon", category: "Eau de Parfum • Leather Intense", badge: "EXCLUSIVO", previewNotes: "Cuero, Hojas de Violeta, Canela, Nuez Moscada & Oud", description: "Un tributo al lujo del cuero fino combinado con especias cálidas y violeta.", top: "Cuero, Hojas de Violeta, Mandarina", heart: "Canela, Nuez Moscada, Cedro", base: "Oud, Vetiver, Sándalo" },
+            { id: 61, name: "Al Haramain – Amber Oud Gold Edition", category: "Eau de Parfum • Fruity Gourmand", badge: "ICONICO", previewNotes: "Notas Frutales, Bergamota, Melón, Vainilla & Almizcle", description: "Una nube frutal y avainillada de proyección escandalosa y duración infinita.", top: "Notas Frutales, Bergamota", heart: "Melón, Piña, Notas Ambarinas", base: "Vainilla, Almizcle, Notas Amaderadas" },
+            { id: 62, name: "Al Haramain – Amber Oud Rouge", category: "Eau de Parfum • Amber Floral", badge: "BEST SELLER", previewNotes: "Azafrán, Jazmín, Madera de Ámbar & Abeto", description: "Opulento, dulce y ambarino. Una fragancia de lujo absoluto con estela magnética.", top: "Azafrán, Jazmín", heart: "Madera de Ámbar, Ámbar Gris", base: "Resina de Abeto, Cedro" },
+            { id: 63, name: "Al Haramain – Amber Oud Tobacco Edition", category: "Eau de Parfum • Tobacco Spice", badge: "EXCLUSIVO", previewNotes: "Tabaco, Canela, Notas Especiadas, Vainilla & Cacao", description: "Profundo, especiado y avainillado con un tabaco de pipa exquisito.", top: "Hojas de Tabaco, Canela, Notas Especiadas, Jengibre", heart: "Clavo de Olor, Cacao, Haba Tonka, Incienso", base: "Vainilla, Frutos Secos, Notas Amaderadas" },
+            { id: 64, name: "Al Haramain – Amber Oud Carbon Edition", category: "Eau de Parfum • Aromatic Fougère", badge: "POPULAR", previewNotes: "Lavanda, Bergamota, Rosas, Cedro & Ámbar", description: "Varonil, fresco y aromático con un corazón floral y fondo ambarino.", top: "Lavanda, Bergamota, Romero", heart: "Geranio, Salvia, Raíz de Orris", base: "Cedro, Vetiver, Sándalo, Ámbar, Musgo" },
+            { id: 65, name: "Al Haramain – Amber Oud Bleu Edition", category: "Eau de Parfum • Fresh Spicy", badge: "POPULAR", previewNotes: "Toronja, Limón, Menta, Pimienta Rosa & Cedro", description: "Un azul refinado y fresco con matices especiados y maderas limpias.", top: "Toronja, Limón, Menta, Pimienta Rosa", heart: "Jengibre, Nuez Moscada, Jazmín", base: "Incienso, Vetiver, Cedro, Sándalo" },
+            { id: 66, name: "Al Haramain – Amber Oud Aqua Dubai", category: "Eau de Parfum • Oceanic Fresh", badge: "NUEVO", previewNotes: "Bergamota, Mandarina, Notas Marinas, Té Verde & Almizcle", description: "Inspirado en la opulencia de Dubái. Frescura marina cristalina con té verde y cítricos.", top: "Bergamota, Mandarina, Notas Cítricas", heart: "Notas Marinas, Té Verde, Grosella Negra", base: "Almizcle, Sándalo, Sándalo Blanco" },
+            { id: 67, name: "Al Haramain – Detour Noir", category: "Eau de Parfum • Spicy Vanilla", badge: "BEST SELLER", previewNotes: "Almendra, Pimienta Rosa, Jazmín, Vainilla & Madera", description: "Cálido, especiado, avainillado y sumamente seductor.", top: "Almendra, Pimienta Rosa, Bergamota, Notas A Fuego", heart: "Jazmín, Naranja Dulce, Helotrope", base: "Vainilla, Sándalo, Madera de Guayaco" },
+            { id: 68, name: "Al Haramain – L'Aventure", category: "Eau de Parfum • Chypre Fruity", badge: "CLASICO", previewNotes: "Elemi, Bergamota, Limón, Jazmín, Pachulí & Almizcle", description: "Elegante mezcla de cítricos chispeantes, flores blancas y maderas nobles.", top: "Elemi, Bergamota, Limón", heart: "Jazmín, Lirios del Valle, Madera Leñosa", base: "Pachulí, Ámbar, Almizcle" },
+            { id: 69, name: "Al Haramain – L'Aventure Knight", category: "Eau de Parfum • Aromatic Woody", badge: "POPULAR", previewNotes: "Té, Bergamota, Lavanda, Cuero & Sándalo", description: "Varonil y sofisticado con notas de té aromático y cuero suave.", top: "Té, Bergamota, Limón", heart: "Lavanda, Violeta, Iris", base: "Cuero, Ámbar, Sándalo, Almizcle" },
+            { id: 70, name: "Al Haramain – Junoon Noir", category: "Eau de Parfum • Powdery Floral", badge: "EXCLUSIVO", previewNotes: "Flor de Naranjo, Bayas, Iris, Almizcle & Vainilla", description: "Una experiencia empolvada, elegante y lujosa inspirada en los clásicos de alta costura.", top: "Flor de Naranjo, Bayas", heart: "Iris, Rosa, Jazmín", base: "Almizcle, Vainilla, Haba Tonka, Cedro" },
+            { id: 71, name: "Rasasi – Hawas For Him", category: "Eau de Parfum • Aquatic Fruity", badge: "ICONICO", previewNotes: "Manzana, Canela, Limón, Ciruela, Ámbar Gris & Almizcle", description: "Una bestia de cumplidos. Fresco, frutal, acuático con un secado ambarino irresistible.", top: "Manzana, Bergamota, Canela, Limón", heart: "Ciruela, Flor de Naranjo, Cardamomo, Llorón", base: "Ámbar Gris, Almizcle, trozos de madera, Pachulí" },
+            { id: 72, name: "Rasasi – Hawas Ice", category: "Eau de Parfum • Frosted Aquatic", badge: "NUEVO", previewNotes: "Manzana, Limón, Menta Helada, Flor de Naranjo & Almizcle", description: "Versión glacial y ultra refrescante de Hawas con notas heladas de menta y manzana crujiente.", top: "Manzana, Limón, Menta, Anís, Mandarina", heart: "Flor de Naranjo, Cardamomo, Ciruela", base: "Almizcle, Ámbar, Musgo, trozos de madera" },
+            { id: 73, name: "Rasasi – La Yuqawam Homme", category: "Eau de Parfum • Leather Masterpiece", badge: "ICONICO", previewNotes: "Tomillo, Azafrán, Frambuesa, Cuero & Oud", description: "Lujo de autor. Cuero ahumado combinado magistralmente con frambuesa dulce y azafrán.", top: "Tomillo, Azafrán, Frambuesa", heart: "Jazmín, Artemisa, Líbano", base: "Cuero, Notas Amaderadas, Gamuza, Ámbar" },
+            { id: 74, name: "Rasasi – Shuhrah Pour Homme", category: "Eau de Parfum • Woody Smoky", badge: "POPULAR", previewNotes: "Tomillo, Hoja de Tomate, Rosa, Oud & Cuero", description: "Único, terroso y ahumado con una personalidad avasallante y gran fijación.", top: "Tomillo, Hoja de Tomate", heart: "Rosa, Cedro, Sándalo", base: "Oud, Cuero, Almizcle, Musgo de Roble" },
+            { id: 75, name: "Rasasi – Daarej Pour Homme", category: "Eau de Parfum • Spicy Vanilla", badge: "POPULAR", previewNotes: "Cardamomo, Artemisa, Comino, Vainilla & Sándalo", description: "Cálido, especiado, dulce y muy romántico. Un imán de halagos nocturno.", top: "Cardamomo, Artemisa, Comino", heart: "Rosa, Raíz de Orris", base: "Vainilla, Sándalo, Pachulí, Ámbar, Almizcle, Oud" },
+            { id: 76, name: "Rasasi – Qasamat Rasana", category: "Eau de Parfum • Fruity Woody", badge: "EXCLUSIVO", previewNotes: "Manzana, Bergamota, Limón, Cuero, Oud & Cedro", description: "Elegante y multifacético. Frutas frescas en la salida con un fondo de cuero y maderas.", top: "Manzana, Bergamota, Limón, Notas Frutales", heart: "Jazmín, Sándalo, Cuero", base: "Oud, Cedro, Almizcle, Ámbar" },
+            { id: 77, name: "Rasasi – Sotoor Taa", category: "Eau de Parfum • Oriental Spicy", badge: "NUEVO", previewNotes: "Neroli, Pimienta, Canela, Cuero & Sándalo", description: "Especiado, cálido y refinado con acordes de cuero y maderas preciosas.", top: "Neroli, Pimienta", heart: "Canela, Flor de Naranjo, Cardamomo", base: "Cuero, Sándalo, Cedro, Almizcle" },
+            { id: 78, name: "Maison Alhambra – Jean Lowe Immortel", category: "Eau de Parfum • Amber Citrus", badge: "BEST SELLER", previewNotes: "Jengibre, Toronja, Bergamota, Amber & Especias", description: "Inspirado en la alta perfumería francesa. Cítricos chispeantes con un fondo ambarino y especiado.", top: "Jengibre, Toronja, Bergamota", heart: "Notas Acuáticas, Romero, Salvia, Geranio", base: "Ambroxan, Ámbar, Láddano" },
+            { id: 79, name: "Maison Alhambra – Jean Lowe Noir", category: "Eau de Parfum • Smoky Oud", badge: "EXCLUSIVO", previewNotes: "Incienso, Oud, Cuero, Especias & Maderas", description: "Oscuro, místico y lujoso. Un tributo al incienso oriental y las resinas sagradas.", top: "Incienso, Especias", heart: "Oud, Cuero, Pachulí", base: "Ámbar, Maderas Nobles" },
+            { id: 80, name: "Maison Alhambra – Kismet Angel", category: "Eau de Parfum • Cognac Gourmand", badge: "ICONICO", previewNotes: "Licor, Miel, Canela, Vainilla & Haba Tonka", description: "Lujoso y embriagador. Notas de licor de coñac, canela y miel sobre una base de vainilla.", top: "Licor, Miel", heart: "Canela, Caramelo, Vainilla", base: "Haba Tonka, Sándalo" },
+            { id: 81, name: "Maison Alhambra – Kismet for Men", category: "Eau de Parfum • Woody Chypre", badge: "POPULAR", previewNotes: "Notas Amaderadas, Nuez Moscada, Pachulí, Vainilla & Cacao", description: "Elegante y seductor. Con un perfil amaderado y matices dulces de cacao y vainilla.", top: "Notas Amaderadas, Nuez Moscada", heart: "Pachulí, Sándalo, Café", base: "Vainilla, Cacao" },
+            { id: 82, name: "Maison Alhambra – Porto Neroli", category: "Eau de Parfum • Citrus Aquatic", badge: "POPULAR", previewNotes: "Neroli, Mandarina, Limón, Lavanda & Ámbar", description: "Un aroma veraniego mediterráneo, chispeante y ultra refrescante de neroli y cítricos.", top: "Neroli, Mandarina, Limón, Jazmín, Naranja Amarga", heart: "Flor de Naranjo, Sal Marina, Lavanda", base: "Ámbar, Almizcle, Madera" },
+            { id: 83, name: "Maison Alhambra – Tobacco Touch", category: "Eau de Parfum • Warm Tobacco", badge: "BEST SELLER", previewNotes: "Hojas de Tabaco, Especias, Vainilla, Cacao & Frutos Secos", description: "Acogedor, especiado y sofisticado con tabaco dulce y vainilla cremosa.", top: "Hojas de Tabaco, Notas Especiadas", heart: "Tabaco, Vainilla, Cacao, Haba Tonka", base: "Frutos Secos, Notas Amaderadas" },
+            { id: 84, name: "Maison Alhambra – Lovely Cherie", category: "Eau de Parfum • Cherry Gourmand", badge: "POPULAR", previewNotes: "Cereza Negra, Licor, Almendra Amarga, Rosa & Vainilla", description: "Dulce, frutal y seductor. Cereza negra licorosa con almendras y vainilla.", top: "Cereza Negra, Licor, Almendra Amarga", heart: "Cereza Ácida, Rosa, Jazmín", base: "Vainilla, Haba Tonka, Sándalo, Vetiver" },
+            { id: 85, name: "Maison Alhambra – Delilah", category: "Eau de Parfum • Floral Rose", badge: "BEST SELLER", previewNotes: "Rival, Lichi, Bergamota, Rosa Turca & Almizcle", description: "Femenino, delicado y majestuoso con rosa turca, ruibarbo y un fondo avainillado.", top: "Ruibarbo, Lichi, Bergamota", heart: "Rosa Turca, Peonía, Almizcle", base: "Cachemira, Incienso, Vainilla" },
+            { id: 86, name: "Maison Alhambra – Sceptre Malachite", category: "Eau de Parfum • Green Ambery", badge: "NUEVO", previewNotes: "Mandarina, Bergamota, Notas Verdes, Ámbar & Almizcle", description: "Fresco y vibrante con un frasco artístico y notas ambarinas de alta gama.", top: "Mandarina, Bergamota", heart: "Notas Verdes, Especias", base: "Ámbar, Almizcle, Notas Amaderadas" },
+            { id: 87, name: "French Avenue – Liquid Brun", category: "Eau de Parfum • Luxury Gourmand", badge: "EXCLUSIVO", previewNotes: "Canela, Cardamomo, Flor de Naranjo, Vainilla & Bourbon", description: "Una joya de la perfumería moderna con notas especiadas cálidas, azahar y bourbon avainillado.", top: "Canela, Cardamomo, Bergamota", heart: "Flor de Naranjo, Boronia, Resinas", base: "Vainilla, Bourbon, Almizcle, Madera" },
+            { id: 88, name: "French Avenue – Vulcan Feu", category: "Eau de Parfum • Intense Woody", badge: "EXCLUSIVO", previewNotes: "Especias, Incienso, Maderas Preciosas, Cuero & Ámbar", description: "Intenso, fuego y misterio encapsulados en maderas preciosas e incienso.", top: "Especias Cálidas, Incienso", heart: "Maderas Preciosas, Cuero", base: "Ámbar Gris, Almizcle" },
+            { id: 89, name: "French Avenue – Azzure Oud", category: "Eau de Parfum • Aquatic Oud", badge: "NUEVO", previewNotes: "Notas Marinas, Cítricos, Oud Suave, Ámbar & Almizcle", description: "La dualidad perfecta entre la frescura marina y la profundidad del oud oriental.", top: "Notas Marinas, Cítricos", heart: "Oud Suave, Especias", base: "Ámbar, Almizcle" },
+            { id: 90, name: "Paris Corner – Khair Pistachio", category: "Eau de Parfum • Pistachio Gourmand", badge: "ICONICO", previewNotes: "Pistacho, Helado, Avellana, Ron, Vainilla & Crema", description: "Un manjar gourmand adictivo y cremoso con notas de pistacho tostado, helado y vainilla.", top: "Pistacho, Helado, Bergamota, Avellana", heart: "Lirios del Valle, Pera, Peonía, Frambuesa", base: "Vainilla, Crema batida, Malvavisco, Sándalo" },
+            { id: 91, name: "Paris Corner – Caramel Cascade", category: "Eau de Parfum • Rich Caramel", badge: "POPULAR", previewNotes: "Caramela, Vainilla, Leche, Azúcar & Almizcle", description: "Baño de caramelo puro y leche condensada para los amantes de los aromas ultra dulces.", top: "Caramelo, Leche", heart: "Azúcar Blanca, Vainilla", base: "Almizcle, Notas Cremosas" },
+            { id: 92, name: "Paris Corner – Emir Celestial", category: "Eau de Parfum • Niche Aquatic", badge: "EXCLUSIVO", previewNotes: "Mandarina, Notas Marinas, Grosella, Té & Almizcle", description: "Celestial, limpio y fresco con acordes marinos y tés aromáticos.", top: "Mandarina, Notas Marinas", heart: "Grosella Negra, Té Verde", base: "Almizcle, Sándalo" },
+            { id: 93, name: "Paris Corner – Rifaaqat", category: "Eau de Parfum • Spicy Vanilla", badge: "POPULAR", previewNotes: "Pimienta Rosa, Elemi, Vainilla, Ámbar & Oud", description: "Especiado, cálido y ambarino con un secado dulce y elegante.", top: "Pimienta Rosa, Elemi", heart: "Vainilla, Olíbano", base: "Ámbar, Oud, Maderas" },
+            { id: 94, name: "Swiss Arabian – Shaghaf Oud", category: "Eau de Parfum • Oud Praliné", badge: "ICONICO", previewNotes: "Azafrán, Rosa, Oud, Praliné & Vainilla", description: "Una joya oriental con una sobredosis de praliné dulce, rosas y oud magnético.", top: "Azafrán, Rosa", heart: "Oud, Praliné, Flores", base: "Oud, Vainilla" },
+            { id: 95, name: "Swiss Arabian – Shaghaf Oud Azraq", category: "Eau de Parfum • Honey Oud", badge: "EXCLUSIVO", previewNotes: "Miel, Oud, Canela, Vainilla & Ámbar", description: "Miel dorada y cálida combinada con oud ambarino y especias.", top: "Miel, Notas Cítricas", heart: "Oud, Canela, Canela", base: "Vainilla, Ámbar, Pachulí" },
+            { id: 96, name: "Swiss Arabian – Shaghaf Oud Tonka", category: "Eau de Parfum • Tonka Gourmand", badge: "NUEVO", previewNotes: "Almendra, Haba Tonka, Canela, Vainilla & Oud", description: "Cremosa haba tonka y almendras dulces fundidas con el sello icónico de Shaghaf Oud.", top: "Almendra", heart: "Haba Tonka, Canela, Flores", base: "Vainilla, Oud, Sándalo" },
+            { id: 97, name: "Al Wataniah – Sabah Al Ward", category: "Eau de Parfum • Floral Sweet", badge: "POPULAR", previewNotes: "Pimienta Rosa, Mandarina, Azahar, Vainilla & Haba Tonka", description: "Una mañana de rosas y flores blancas con un fondo avainillado sumamente acogedor.", top: "Pimienta Rosa, Mandarina", heart: "Azahar, Rosa, Notas Florales", base: "Vainilla, Haba Tonka, Haba Tonka" },
+            { id: 98, name: "Al Wataniah – Durrat Al Aroos", category: "Eau de Parfum • Musk Cream", badge: "EXCLUSIVO", previewNotes: "Almizcle Blanco, Notas Cremosas, Madera de Oud & Ambar", description: "La perla de las novias. Un almizcle cremoso, limpio y lujoso que perdura por días en la piel.", top: "Almizcle Blanco, Notas Cremosas", heart: "Oud Suave, Flores Blancas", base: "Ámbar, Almizcle" },
+            { id: 99, name: "Al Wataniah – Watani", category: "Eau de Parfum • Fruity Oriental", badge: "POPULAR", previewNotes: "Frutas Exóticas, Notas Cítricas, Jazmín & Almizcle", description: "Exótico, frutal y vibrante con un toque oriental inconfundible.", top: "Frutas Exóticas, Cítricos", heart: "Jazmín, Flores", base: "Almizcle, Ámbar, Sándalo" },
+            { id: 100, name: "Asdaaf – Ameerat Al Arab", category: "Eau de Parfum • Fruity Floral", badge: "BEST SELLER", previewNotes: "Uvas, Naranja, Almizcle Blanco, Rosa & Vainilla", description: "La princesa de Arabia. Notas dulces de uvas y cítricos sobre un lecho floral almizclado.", top: "Uvas, Naranja", heart: "Almizcle Blanco, Rosa, Jazmín", base: "Vainilla, Sándalo, Sándalo Blanco" }
+        ];
+
+        const grid = document.getElementById('productGrid');
+
+        parfums.forEach(p => {
+            const card = document.createElement('article');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="card-image-box">
+                    <div class="card-parfum-graphic"></div>
+                    <span class="card-badge">${p.badge}</span>
+                </div>
+                <div class="card-info">
+                    <h3 class="card-title">${p.name}</h3>
+                    <p class="card-category">${p.category}</p>
+                    <p class="card-notes-preview">${p.previewNotes}</p>
+                    <button class="btn-card-action" onclick="openModal(${p.id})">Vista Rápida</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        const categoryMap = {
+            frescos: [3,4,25,38,39,42,47,48,53,57,65,66,68,71,72,78,82,86,89,92,99,100,28,69,50],
+            amaderados: [1,5,14,15,16,17,21,22,26,27,29,32,34,36,43,51,54,55,56,58,59,60,63,64,73,74,76,77,79,81,83,88,93,94,95,96,98],
+            dulces: [2,6,7,8,9,10,19,20,30,44,45,46,61,80,84,87,90,91],
+            florales: [11,12,13,18,23,24,31,33,35,37,40,41,49,62,67,70,75,85,97]
+        };
+
+        document.querySelectorAll('.cat-tab').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.cat-tab').forEach(b => {
+                    b.style.background = 'transparent';
+                    b.style.color = 'var(--text-main)';
+                    b.style.borderColor = 'rgba(212,175,55,0.3)';
+                });
+                btn.style.background = 'var(--gold)';
+                btn.style.color = 'var(--bg-deep)';
+                btn.style.borderColor = 'var(--gold)';
+
+                const cat = btn.dataset.category;
+                grid.innerHTML = '';
+                let filtered = parfums;
+                if (cat !== 'todos') {
+                    filtered = parfums.filter(p => categoryMap[cat] && categoryMap[cat].includes(p.id));
+                }
+                filtered.forEach(p => {
+                    const card = document.createElement('article');
+                    card.className = 'product-card is-visible';
+                    card.innerHTML = `
+                        <div class="card-image-box">
+                            <div class="card-parfum-graphic"></div>
+                            <span class="card-badge">${p.badge}</span>
+                        </div>
+                        <div class="card-info">
+                            <h3 class="card-title">${p.name}</h3>
+                            <p class="card-category">${p.category}</p>
+                            <p class="card-notes-preview">${p.previewNotes}</p>
+                            <button class="btn-card-action" onclick="openModal(${p.id})">Vista Rápida</button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            });
+        });
+
+        const modal = document.getElementById('quickModal');
+        const modalClose = document.getElementById('modalClose');
+
+        function openModal(id) {
+            const p = parfums.find(item => item.id === id);
+            if (!p) return;
+
+            document.getElementById('modalTitle').innerText = p.name;
+            document.getElementById('modalCategory').innerText = p.category;
+            document.getElementById('modalDesc').innerText = p.description;
+            document.getElementById('pyramidTop').innerText = p.top;
+            document.getElementById('pyramidHeart').innerText = p.heart;
+            document.getElementById('pyramidBase').innerText = p.base;
+
+            const waText = encodeURIComponent(`Hola Fragrance Parfum, quiero cotizar un parfum.`);
+            document.getElementById('modalWaBtn').href = `https://wa.me/50498314942?text=${waText}`;
+
+            modal.classList.add('active');
+        }
+
+        modalClose.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.product-card').forEach(card => observer.observe(card));
+
+        const container = document.getElementById('canvas3d-container');
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 7.5);
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffe8c0, 1.4);
+        scene.add(ambientLight);
+
+        const pointLight1 = new THREE.PointLight(0xffd700, 4, 60);
+        pointLight1.position.set(4, 6, 5);
+        scene.add(pointLight1);
+
+        const pointLight2 = new THREE.PointLight(0xd4af37, 3, 50);
+        pointLight2.position.set(-4, -2, 4);
+        scene.add(pointLight2);
+
+        const pointLight3 = new THREE.PointLight(0xffffff, 1.5, 40);
+        pointLight3.position.set(0, -4, 3);
+        scene.add(pointLight3);
+
+        const bottleGroup = new THREE.Group();
+
+        const bodyGeo = new THREE.BoxGeometry(2.0, 2.6, 1.1, 8, 8, 8);
+        const glassMat = new THREE.MeshPhysicalMaterial({
+            color: 0x1a6b7c,
+            metalness: 0.05,
+            roughness: 0.35,
+            transmission: 0.55,
+            thickness: 1.0,
+            transparent: true,
+            opacity: 0.92
+        });
+        const bodyMesh = new THREE.Mesh(bodyGeo, glassMat);
+        bottleGroup.add(bodyMesh);
+
+        for (let i = 0; i < 6; i++) {
+            const facetGeo = new THREE.BoxGeometry(0.04, 2.4, 1.12);
+            const facetMat = new THREE.MeshStandardMaterial({
+                color: 0x0e4a58,
+                metalness: 0.3,
+                roughness: 0.4
+            });
+            const facetMesh = new THREE.Mesh(facetGeo, facetMat);
+            facetMesh.position.x = -0.85 + i * 0.34;
+            facetMesh.position.z = 0.02;
+            bottleGroup.add(facetMesh);
+        }
+
+        const plateGeo = new THREE.PlaneGeometry(1.1, 0.7);
+        const plateMat = new THREE.MeshStandardMaterial({
+            color: 0xd4af37,
+            metalness: 1.0,
+            roughness: 0.15
+        });
+        const plateMesh = new THREE.Mesh(plateGeo, plateMat);
+        plateMesh.position.set(0, 0.4, 0.56);
+        bottleGroup.add(plateMesh);
+
+        const neckGeo = new THREE.CylinderGeometry(0.35, 0.4, 0.35, 32);
+        const neckMat = new THREE.MeshStandardMaterial({
+            color: 0xd4af37,
+            metalness: 0.95,
+            roughness: 0.15
+        });
+        const neckMesh = new THREE.Mesh(neckGeo, neckMat);
+        neckMesh.position.y = 1.45;
+        bottleGroup.add(neckMesh);
+
+        const capGeo = new THREE.ConeGeometry(0.32, 0.9, 8);
+        const capMat = new THREE.MeshStandardMaterial({
+            color: 0xd4af37,
+            metalness: 1.0,
+            roughness: 0.12
+        });
+        const capMesh = new THREE.Mesh(capGeo, capMat);
+        capMesh.position.y = 2.0;
+        bottleGroup.add(capMesh);
+
+        scene.add(bottleGroup);
+        bottleGroup.position.x = window.innerWidth > 768 ? 1.6 : 0;
+
+        const particlesCount = 250;
+        const particlesGeo = new THREE.BufferGeometry();
+        const particlesPos = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i += 3) {
+            particlesPos[i] = (Math.random() - 0.5) * 10;
+            particlesPos[i+1] = (Math.random() - 0.5) * 10;
+            particlesPos[i+2] = (Math.random() - 0.5) * 7;
+        }
+
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(particlesPos, 3));
+        const particlesMat = new THREE.PointsMaterial({
+            color: 0xffd700,
+            size: 0.05,
+            transparent: true,
+            opacity: 0.85
+        });
+        const particleSystem = new THREE.Points(particlesGeo, particlesMat);
+        scene.add(particleSystem);
+
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        document.addEventListener('touchmove', (event) => {
+            if(event.touches.length > 0) {
+                mouseX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+            }
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            targetX = mouseX * 0.6;
+            targetY = mouseY * 0.6;
+
+            bottleGroup.rotation.y += (targetX - bottleGroup.rotation.y) * 0.05;
+            bottleGroup.rotation.x += (targetY - bottleGroup.rotation.y) * 0.05;
+
+            bottleGroup.rotation.y += 0.005;
+            bottleGroup.position.y = Math.sin(elapsedTime * 1.5) * 0.1;
+
+            particleSystem.rotation.y = elapsedTime * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            bottleGroup.position.x = window.innerWidth > 768 ? 1.8 : 0;
+        });
+    </script>
+
+</body></html>
